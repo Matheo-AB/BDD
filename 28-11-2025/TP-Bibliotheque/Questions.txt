@@ -1,0 +1,36 @@
+a) SELECT titre FROM LIVRE UNION SELECT titre FROM LIVRE2;
+
+b) SELECT titre FROM LIVRE INTERSECT SELECT titre FROM LIVRE2;
+
+c) SELECT Livre_id FROM LIVRE
+MINUS
+SELECT Livre_id FROM LIVRE2;
+SELECT titre FROM LIVRE
+WHERE Livre_id IN (
+    SELECT Livre_id FROM LIVRE
+    MINUS
+    SELECT Livre_id FROM LIVRE2
+);
+
+d) SELECT Livre_id FROM EMPRUNT
+INTERSECT
+SELECT Livre_id FROM LIVRE WHERE genre = 'Fantasy';   
+
+SELECT titre FROM LIVRE
+WHERE Livre_id IN (
+    SELECT Livre_id FROM LIVRE
+    MINUS
+    SELECT Livre_id FROM LIVRE WHERE genre = 'Fantasy'
+);
+
+e) SELECT membre_id FROM MEMBRE
+MINUS
+SELECT membre_id FROM EMPRUNT;
+
+f) SELECT titre FROM LIVRE WHERE auteur = 'J.R.R. Tolkien'
+INTERSECT
+SELECT titre FROM LIVRE WHERE genre = 'Fantasy';   
+
+g) SELECT titre FROM LIVRE WHERE auteur = 'J.R.R. Tolkien'
+INTERSECT
+SELECT titre FROM LIVRE WHERE genre = 'Fantasy';   
