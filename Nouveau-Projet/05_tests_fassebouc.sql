@@ -1,5 +1,10 @@
 SET SERVEROUTPUT ON;
 
+    -- =======================================================
+    -- Fichier de test
+    -- =======================================================
+
+
 -- 1. Test de connexion/déconnexion
 DECLARE
     v_connecte BOOLEAN;

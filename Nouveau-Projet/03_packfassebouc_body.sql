@@ -1,11 +1,11 @@
 CREATE OR REPLACE PACKAGE BODY PackFasseBouc AS
 
-    -- Variable de session (simulée) pour l'utilisateur actuellement connecté
-    g_utilisateur_connecte UTILISATEUR.LOGIN%TYPE := NULL;
+    -- =======================================================
+    -- Gestion utilisateurs & variables
+    -- =======================================================
 
-    -- =======================================================
-    -- 1. Utilisateur
-    -- =======================================================
+    -- Variable de session / Simulation utilisateur.
+    g_utilisateur_connecte UTILISATEUR.LOGIN%TYPE := NULL;
 
     PROCEDURE ajouterUtilisateur (p_loginUtilisateur IN UTILISATEUR.LOGIN%TYPE, p_nom IN UTILISATEUR.NOM%TYPE, p_mdp IN UTILISATEUR.MDP%TYPE)
     IS
@@ -20,7 +20,16 @@ CREATE OR REPLACE PACKAGE BODY PackFasseBouc AS
     PROCEDURE supprimerUtilisateur (p_loginUtilisateur IN UTILISATEUR.LOGIN%TYPE)
     IS
     BEGIN
-        -- Les suppressions dans AMI, MESSAGE_MUR, REPONSE sont gérées par CASCADE ou doivent être faites ici
+        -- Suppressions dans AMI, MESSAGE_MUR, REPONSE sont gérées par CASCADE
+        DELETE FROM AMI
+        WHERE LOGIN = 
+
+        DELETE FROM MESSAGE_MUR
+        WHERE LOGIN = 
+
+        DELETE FROM REPONSE
+        WHERE LOGIN = 
+
         -- Nous comptons sur les contraintes ON DELETE CASCADE si elles sont bien implémentées.
         DELETE FROM UTILISATEUR
         WHERE LOGIN = p_loginUtilisateur;
@@ -55,11 +64,9 @@ CREATE OR REPLACE PACKAGE BODY PackFasseBouc AS
         g_utilisateur_connecte := NULL;
         DBMS_OUTPUT.PUT_LINE('Déconnexion effectuée.');
     END deconnexion;
-
     -- =======================================================
-    -- 2. Amis
+    -- Gestion Amis
     -- =======================================================
-
     -- Ajout d'ami sans acceptation, gestion de l'ordre canonique
     PROCEDURE ajouterAmi (p_loginAmi1 IN AMI.LOGIN_UTILISATEUR1%TYPE, p_loginAmi2 IN AMI.LOGIN_UTILISATEUR2%TYPE)
     IS
@@ -102,7 +109,6 @@ CREATE OR REPLACE PACKAGE BODY PackFasseBouc AS
         DELETE FROM AMI
         WHERE LOGIN_UTILISATEUR1 = v_login1
           AND LOGIN_UTILISATEUR2 = v_login2;
-          
         IF SQL%ROWCOUNT = 0 THEN
              DBMS_OUTPUT.PUT_LINE('Le lien d''amitié n''existait pas.');
         ELSE
@@ -150,7 +156,7 @@ CREATE OR REPLACE PACKAGE BODY PackFasseBouc AS
     END compterAmi;
 
     -- =======================================================
-    -- 3. Messages Mur
+    -- Messages Mur
     -- =======================================================
 
     -- Affichage du Mur (Messages + Réponses)
@@ -232,7 +238,7 @@ CREATE OR REPLACE PACKAGE BODY PackFasseBouc AS
     END repondreMessageMur;
 
     -- =======================================================
-    -- 4. Recherche
+    -- Recherche
     -- =======================================================
 
     -- Recherche par préfixe de login
